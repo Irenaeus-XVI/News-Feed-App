@@ -11,8 +11,6 @@ import bcrypt from 'bcrypt'
 
 
 const addUser = handleAsyncError(async (req, res, next) => {
-
-
     const user = new userModel(req.body)
     await user.save()
     res.status(201).json({ message: "user added successfully", user })
@@ -56,8 +54,29 @@ const changeUserPassword = handleAsyncError(async (req, res, next) => {
     updatedUser && res.status(201).json({ message: "success", updatedUser });
 
 });
+
+
+
+
+
+const getAllUsers = handleAsyncError(async (req, res, next) => {
+
+    const users = await userModel.find()
+    res.status(200).json({ message: "success", users })
+})
+
+const getSpecificUser = handleAsyncError(async (req, res, next) => {
+
+    const { id } = req.params
+    const user = await userModel.findById(id)
+    res.status(200).json({ message: "success", user })
+})
+
+
 export {
     addUser,
     updateUser,
-    changeUserPassword
+    changeUserPassword,
+    getAllUsers,
+    getSpecificUser
 }

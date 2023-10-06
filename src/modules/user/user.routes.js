@@ -5,11 +5,13 @@ const router = express.Router()
 
 router.route('/')
     .post(User.addUser)
+    .get(User.getAllUsers)
 
 
 router.route('/:id')
     .put(User.updateUser)
     .patch(User.changeUserPassword)
+    .get(User.getSpecificUser)
 
 
 
