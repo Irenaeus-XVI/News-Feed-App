@@ -1,6 +1,5 @@
-import { Schema } from "mongoose";
-
-
+import { Schema, model } from "mongoose";
+import bcrypt from 'bcrypt'
 
 const userSchema = new Schema({
     name: {
@@ -37,5 +36,11 @@ const userSchema = new Schema({
 
 }, { timestamps: true })
 
+
+
+
+userSchema.pre('save', function () {
+    this.password = bcrypt.hashSync(this.password, Number(process.env.SALT_ROUNDS))
+})
 
 export const userModel = model('user', userSchema);
