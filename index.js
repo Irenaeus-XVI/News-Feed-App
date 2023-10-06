@@ -7,7 +7,7 @@ import morgan from 'morgan';
 dotenv.config();
 const app = express()
 app.use(morgan('dev'))
-const port = 4000 
+const port = 4000
 
 
 
