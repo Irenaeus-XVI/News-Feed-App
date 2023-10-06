@@ -3,6 +3,7 @@ import { connection } from './db/dbConnection.js'
 //NOTE - import dotenv
 import * as dotenv from 'dotenv';
 import morgan from 'morgan';
+import { globalErrorHandling } from './src/middleware/globalErrorHandling.js';
 
 dotenv.config();
 const app = express()
@@ -18,3 +19,6 @@ connection();
 
 app.get('/', (req, res) => res.send('Hello World!'))
 app.listen(port, () => console.log(`app listening on port ${port}!`))
+
+
+app.use(globalErrorHandling)
