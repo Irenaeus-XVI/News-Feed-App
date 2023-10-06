@@ -47,7 +47,7 @@ userSchema.pre('save', function () {
 
 //NOTE - Hash Password When Update The User password 
 userSchema.pre('findOneAndUpdate', function () {
-    this._update.password = bcrypt.hashSync(this._update.password, Number(process.env.SALT_ROUNDS))
+    if (this._update.password) this._update.password = bcrypt.hashSync(this._update.password, Number(process.env.SALT_ROUNDS))
 });
 
 
