@@ -12,6 +12,7 @@ router.route('/:id')
     .put(User.updateUser)
     .patch(User.changeUserPassword)
     .get(User.getSpecificUser)
+    .delete(User.deleteUser)
 
 
 

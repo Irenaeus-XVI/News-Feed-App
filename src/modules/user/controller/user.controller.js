@@ -73,10 +73,20 @@ const getSpecificUser = handleAsyncError(async (req, res, next) => {
 })
 
 
+
+
+const deleteUser = handleAsyncError(async (req, res, next) => {
+    const { id } = req.params
+    const deletedUser = await userModel.findByIdAndDelete(id)
+    res.status(200).json({ message: "success", deletedUser })
+
+})
+
 export {
     addUser,
     updateUser,
     changeUserPassword,
     getAllUsers,
-    getSpecificUser
+    getSpecificUser,
+    deleteUser
 }
