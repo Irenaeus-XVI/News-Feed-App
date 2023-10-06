@@ -9,6 +9,7 @@ router.route('/')
 
 router.route('/:id')
     .put(User.updateUser)
+    .patch(User.changeUserPassword)
 
 
 

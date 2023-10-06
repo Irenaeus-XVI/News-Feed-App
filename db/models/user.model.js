@@ -43,4 +43,13 @@ userSchema.pre('save', function () {
     this.password = bcrypt.hashSync(this.password, Number(process.env.SALT_ROUNDS))
 })
 
+
+
+//NOTE - Hash Password When Update The User password 
+userSchema.pre('findOneAndUpdate', function () {
+    this._update.password = bcrypt.hashSync(this._update.password, Number(process.env.SALT_ROUNDS))
+});
+
+
+
 export const userModel = model('user', userSchema);
