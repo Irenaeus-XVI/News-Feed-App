@@ -7,5 +7,9 @@ router.route('/')
     .post(User.addUser)
 
 
+router.route('/:id')
+    .put(User.updateUser)
+
+
 
 export default router

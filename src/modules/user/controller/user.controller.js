@@ -20,6 +20,19 @@ const addUser = handleAsyncError(async (req, res, next) => {
 
 
 
+
+const updateUser = handleAsyncError(async (req, res, next) => {
+    let { id } = req.params;
+
+    const updatedUser = await userModel.findByIdAndUpdate(id, req.body, { new: true })
+    !updatedUser && next(new AppError('user  Not Found.', 404));
+    updatedUser && res.status(201).json({ message: "success", updatedUser });
+
+});
+
+
+
 export {
-    addUser
+    addUser,
+    updateUser
 }

@@ -38,7 +38,7 @@ const userSchema = new Schema({
 
 
 
-
+//NOTE - Hash User Password Before Save
 userSchema.pre('save', function () {
     this.password = bcrypt.hashSync(this.password, Number(process.env.SALT_ROUNDS))
 })
