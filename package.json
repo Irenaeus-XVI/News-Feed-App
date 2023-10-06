@@ -1,0 +1,11 @@
+{
+  "name": "news-feed-app",
+  "version": "1.0.0",
+  "description": "Simple Social Media App",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Irenaeus-XVI",
+  "license": "ISC"
+}
