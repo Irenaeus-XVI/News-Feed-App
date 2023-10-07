@@ -4,6 +4,7 @@ import { AppError } from '../../../utils/AppError.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt'
 import { sendEmail } from '../../../email/sendEmail.js';
+import cloundinary from '../../../utils/cloundinary.js';
 
 
 const signUp = handleAsyncError(async (req, res, next) => {
@@ -13,7 +14,11 @@ const signUp = handleAsyncError(async (req, res, next) => {
     const existUser = await userModel.findOne({ email });
     if (existUser) return next(new AppError('User Already Exist', 409));
 
+    //NOTE - upload user profile image 
+    const { secure_url } = await cloundinary.uploader.upload(req.file.path, { folder: 'News-Feed-App/imgCover' });
+    req.body.profileImg = secure_url
     //NOTE - add user to database 
+
     const user = new userModel(req.body);
     await user.save();
 
@@ -23,6 +28,7 @@ const signUp = handleAsyncError(async (req, res, next) => {
 
     //NOTE - Send verify email
     sendEmail({ email, api: `${process.env.API}/${verifyToken}` })
+    
     res.status(201).json({ message: "success", user });
 });
 
