@@ -2,6 +2,7 @@ import { userModel } from "../../../../db/models/user.model.js";
 import { AppError } from "../../../utils/AppError.js";
 import { handleAsyncError } from "../../../utils/handleAsyncError.js";
 import bcrypt from 'bcrypt'
+import { deleteOne, getAll, getSpecific } from "../../../utils/helpers/refactor.js";
 
 
 
@@ -72,28 +73,14 @@ const changeUserPassword = handleAsyncError(async (req, res, next) => {
 
 
 
-const getAllUsers = handleAsyncError(async (req, res, next) => {
+const getAllUsers = getAll(userModel, 'user')
 
-    const users = await userModel.find()
-    res.status(200).json({ message: "success", users })
-})
-
-const getSpecificUser = handleAsyncError(async (req, res, next) => {
-
-    const { id } = req.params
-    const user = await userModel.findById(id)
-    res.status(200).json({ message: "success", user })
-})
+const getSpecificUser = getSpecific(userModel, 'user')
 
 
 
 
-const deleteUser = handleAsyncError(async (req, res, next) => {
-    const { id } = req.params
-    const deletedUser = await userModel.findByIdAndDelete(id)
-    res.status(200).json({ message: "success", deletedUser })
-
-})
+const deleteUser = deleteOne(userModel, 'user')
 
 export {
     addUser,
