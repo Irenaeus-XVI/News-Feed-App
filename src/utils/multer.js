@@ -22,7 +22,7 @@ export const fileUpload = () => {
 
 
     }
-    const upload = multer({ storage: storage, fileFilter })
+    const upload = multer({ storage: storage })
 
     return upload.single('imgCover')
 }

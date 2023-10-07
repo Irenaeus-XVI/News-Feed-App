@@ -11,6 +11,10 @@ router.route('/')
 
 router.post('/signIn', Auth.signIn)
 
+router.post('/forgetPassword', Auth.forgetPassword)
+
+router.patch('/resetPassword', Auth.resetPassword)
+
 router.get("/verify/:token", Auth.verifyEmail)
 
 

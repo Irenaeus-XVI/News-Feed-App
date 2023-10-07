@@ -31,19 +31,26 @@ const userSchema = new Schema({
     },
     changePasswordAt: {
         type: Date,
-        default: 0
+        default: undefined
     },
     profileImg: {
         type: String
-    }
+    },
+    otp: String,
+    otpExpiration: Date
 
 }, { timestamps: true })
 
 
 
 //NOTE - Hash User Password Before Save
-userSchema.pre('save', function () {
-    this.password = bcrypt.hashSync(this.password, Number(process.env.SALT_ROUNDS))
+userSchema.pre('save', function (next) {
+
+    if (this.isModified('password')) {
+        this.password = bcrypt.hashSync(this.password, Number(process.env.SALT_ROUNDS));
+    }
+
+    next()
 })
 
 
