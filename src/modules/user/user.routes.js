@@ -1,20 +1,21 @@
 import express from 'express'
 import * as User from './controller/user.controller.js'
 import { validation } from '../../middleware/validation.js'
-import { addUserValidation, changeUserPasswordValidation, deleteUserValidation, updateUserValidation } from './user.validation.js'
+import { addUserValidation, changeUserPasswordValidation, updateUserValidation } from './user.validation.js'
+import { protectedRoutes } from '../auth/controller/auth.controller.js'
 const router = express.Router()
 
 
 router.route('/')
     .post(validation(addUserValidation), User.addUser)
     .get(User.getAllUsers)
+    .patch(protectedRoutes, validation(changeUserPasswordValidation), User.changeUserPassword)
+    .put(protectedRoutes, validation(updateUserValidation), User.updateUser)
 
 
 router.route('/:id')
-    .put(validation(updateUserValidation), User.updateUser)
-    .patch(validation(changeUserPasswordValidation), User.changeUserPassword)
     .get(User.getSpecificUser)
-    .delete(validation(deleteUserValidation), User.deleteUser)
+    .delete(User.deleteUser)
 
 
 

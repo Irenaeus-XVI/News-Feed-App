@@ -22,9 +22,8 @@ const addUser = handleAsyncError(async (req, res, next) => {
 
 
 const updateUser = handleAsyncError(async (req, res, next) => {
-    let { id } = req.params;
 
-    const updatedUser = await userModel.findByIdAndUpdate(id, req.body, { new: true })
+    const updatedUser = await userModel.findByIdAndUpdate(req.user._id, req.body, { new: true })
     !updatedUser && next(new AppError('user  Not Found.', 404));
     updatedUser && res.status(201).json({ message: "success", updatedUser });
 
@@ -34,11 +33,10 @@ const updateUser = handleAsyncError(async (req, res, next) => {
 
 
 const changeUserPassword = handleAsyncError(async (req, res, next) => {
-    let { id } = req.params;
     const { oldPassword, password, rePassword } = req.body
 
     // NOTE - Check the old password 
-    const user = await userModel.findById(id)
+    const user = await userModel.findById(req.user._id)
     const isOldPassword = bcrypt.compareSync(oldPassword, user.password)
     console.log(isOldPassword);
     if (!isOldPassword) {
@@ -60,7 +58,7 @@ const changeUserPassword = handleAsyncError(async (req, res, next) => {
     req.body.password = bcrypt.hashSync(password, Number(process.env.SALT_ROUNDS));
     req.body.changePasswordAt = Date.now();
 
-    const updatedUser = await userModel.findByIdAndUpdate(id, req.body, { new: true });
+    const updatedUser = await userModel.findByIdAndUpdate(req.user._id, req.body, { new: true });
     if (!updatedUser) {
         return next(new AppError('User Not Found.', 404));
     }

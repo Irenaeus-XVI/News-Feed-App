@@ -31,7 +31,7 @@ const userSchema = new Schema({
     },
     changePasswordAt: {
         type: Date,
-        default: undefined
+        default: 0
     },
     profileImg: {
         type: String

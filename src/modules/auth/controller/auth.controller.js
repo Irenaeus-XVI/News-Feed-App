@@ -40,33 +40,28 @@ const signIn = handleAsyncError(async (req, res, next) => {
 
     //NOTE - Check user found or not
     const userFounded = await userModel.findOne({ email });
+    if (!userFounded) return next(new AppError('Please Register First', 400));
+
     //NOTE - Check user verified or not
-
     if (userFounded.verified) {
-        if (userFounded) {
-            const hashedPassword = bcrypt.compareSync(password, userFounded.password);
-            console.log(userFounded);
-            //NOTE - Check user password is correct or not 
-            if (hashedPassword) {
-                const tokenPayload = {
-                    id: userFounded._id,
-                    name: userFounded.name,
-                }
+        const hashedPassword = bcrypt.compareSync(password, userFounded.password);
 
-                //NOTE - create user token
-                jwt.sign(tokenPayload, process.env.SECRET_KEY_TOKEN, (err, decoded) => {
-
-                    return res.json({ Message: "Welcome.", token: decoded });
-                });
-
-            } else {
-                return next(new AppError('Wrong password', 400));
+        //NOTE - Check user password is correct or not 
+        if (hashedPassword) {
+            const tokenPayload = {
+                id: userFounded._id,
+                name: userFounded.name,
             }
-        }
-        else {
-            return next(new AppError('You Have To Register First.', 401));
 
+            //NOTE - create user token
+            jwt.sign(tokenPayload, process.env.SECRET_KEY_TOKEN, (err, decoded) => {
+                return res.json({ Message: "Welcome.", token: decoded });
+            });
+
+        } else {
+            return next(new AppError('Wrong password', 400));
         }
+
     } else {
         return next(new AppError('You Have To Verify Your Account First.', 401));
     }
