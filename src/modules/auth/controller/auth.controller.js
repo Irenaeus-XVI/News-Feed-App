@@ -150,7 +150,25 @@ const resetPassword = handleAsyncError(async (req, res, next) => {
     res.status(200).json({ message: 'Password reset successfully👍' });
 });
 
+const protectedRoutes = handleAsyncError(async (req, res, next) => {
+    const { token } = req.headers
+    //NOTE - check token send or not 
+    if (!token) return next(new AppError('Token Not provided', 404))
 
+    //NOTE - check token valid  
+    const decoded = jwt.verify(token, process.env.SECRET_KEY_TOKEN)
+    const user = await userModel.findById(decoded.id)
+    if (!user) return next(new AppError('Invalid Token'), 401)
+
+    //NOTE - check changePasswordAt to make the user signIn again
+    const changedPasswordAt = parseInt(user.changePasswordAt.getTime() / 1000)
+    if (changedPasswordAt > decoded.iat) return next(new AppError('Invalid Token'), 401)
+
+    //NOTE - send the user data in the request
+    req.user = user
+
+    next()
+})
 
 
 export {
@@ -158,5 +176,6 @@ export {
     signIn,
     verifyEmail,
     forgetPassword,
-    resetPassword
+    resetPassword,
+    protectedRoutes
 }
