@@ -10,6 +10,8 @@ router.route('/')
 
 router.post('/signIn', Auth.signIn)
 
+router.get("/verify/:token", Auth.verifyEmail)
+
 
 
 export default router
