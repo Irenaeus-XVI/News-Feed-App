@@ -14,7 +14,11 @@ const postSchema = new Schema({
         type: String,
         enum: ['public', 'private'],
         default: 'public'
-    }
+    },
+    likeCount: {
+        type: Number,
+        default: 0,
+    },
 }, {
     timestamps: true,
     //NOTE - To allow virtual

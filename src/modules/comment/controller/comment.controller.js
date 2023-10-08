@@ -1,7 +1,7 @@
 import { commentModel } from "../../../../db/models/comment.model.js"
+import { postModel } from "../../../../db/models/post.model.js"
 import { AppError } from "../../../utils/AppError.js"
 import { handleAsyncError } from "../../../utils/handleAsyncError.js"
-import { deleteOne } from "../../../utils/helpers/refactor.js"
 
 
 
@@ -9,6 +9,10 @@ import { deleteOne } from "../../../utils/helpers/refactor.js"
 const addComment = handleAsyncError(async (req, res, next) => {
 
     const { comment, postId } = req.body
+
+    //NOTE - check post availability
+    const post = await postModel.findById(postId)
+    if (!post) return next(new AppError('post not fount', 404))
 
     const addedComment = new commentModel({
         comment,
@@ -27,6 +31,11 @@ const updateComment = handleAsyncError(async (req, res, next) => {
 
     const { comment, postId } = req.body
     const { id } = req.params
+
+    //NOTE - check post availability
+    const post = await postModel.findById(postId)
+    if (!post) return next(new AppError('post not fount', 404))
+
     const updateComment = await commentModel.findOneAndUpdate({ _id: id, userId: req.user._id, postId }, { comment }, { new: true })
 
     if (!updateComment) {
