@@ -9,6 +9,11 @@ const postSchema = new Schema({
     userId: {
         type: mongoose.Types.ObjectId,
         ref: 'user'
+    },
+    privacy: {
+        type: String,
+        enum: ['public', 'private'],
+        default: 'public'
     }
 }, { timestamps: true })
 
