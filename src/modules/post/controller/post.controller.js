@@ -1,7 +1,8 @@
 import { postModel } from "../../../../db/models/post.model.js"
+import { ApiFeatures } from "../../../utils/ApiFeatures.js"
 import { AppError } from "../../../utils/AppError.js"
 import { handleAsyncError } from "../../../utils/handleAsyncError.js"
-import { deleteOne } from "../../../utils/helpers/refactor.js"
+import { getAll } from "../../../utils/helpers/refactor.js"
 
 
 
@@ -55,15 +56,7 @@ const deletePost = handleAsyncError(async (req, res, next) => {
 
 
 
-const getAllPosts = handleAsyncError(async (req, res, next) => {
-
-    //NOTE - get all public posts
-    const posts = await postModel.find({ privacy: "public" }).populate('userId')
-
-    if (!posts) return next(new AppError('no posts founded. ', 404))
-
-    res.status(200).json({ message: "success", posts })
-})
+const getAllPosts = getAll(postModel, 'post', 'userId')
 
 
 const getSpecificUserPosts = handleAsyncError(async (req, res, next) => {

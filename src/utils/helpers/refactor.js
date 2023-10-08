@@ -18,10 +18,10 @@ export const deleteOne = (model, name) => {
 
 }
 
-export const getAll = (apiModel, name) => {
+export const getAll = (apiModel, name, key) => {
     return handleAsyncError(async (req, res, next) => {
         //NOTE - build query
-        let apiFeatures = new ApiFeatures(apiModel.find(), req.query).paginate().filter().search().sort().fields()
+        let apiFeatures = new ApiFeatures(apiModel.find().populate(key), req.query).paginate().filter().search().sort().fields()
         //NOTE - execute query
         const document = await apiFeatures.mongooseQuery
         let response = {}

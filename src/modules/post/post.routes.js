@@ -11,7 +11,7 @@ router.route('/')
     .post(protectedRoutes, validation(addPostValidation), Post.addPost)
     .get(protectedRoutes, Post.getSpecificUserPosts)
 
-router.get('/allPosts', protectedRoutes, Post.getAllPosts)
+router.get('/allPosts', Post.getAllPosts)
 
 router.route('/:id')
     .put(protectedRoutes, validation(updatePostValidation), Post.updatePost)
