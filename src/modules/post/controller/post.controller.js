@@ -1,3 +1,4 @@
+import { likeModel } from "../../../../db/models/like.model.js"
 import { postModel } from "../../../../db/models/post.model.js"
 import { ApiFeatures } from "../../../utils/ApiFeatures.js"
 import { AppError } from "../../../utils/AppError.js"
@@ -50,6 +51,17 @@ const deletePost = handleAsyncError(async (req, res, next) => {
     if (!deletedPost) {
         return next(new AppError('post is not found or you are not allowed to delete it ', 404))
     }
+
+
+    //NOTE - remove all likes from like model  after delete the post 
+
+    await likeModel.bulkWrite([
+        {
+            deleteMany: {
+                filter: { postId: id }
+            }
+        }
+    ])
 
     res.status(201).json({ message: 'post deleted successfully', updatePost })
 })
