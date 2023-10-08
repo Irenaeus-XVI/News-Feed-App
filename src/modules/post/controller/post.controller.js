@@ -1,3 +1,4 @@
+import { commentModel } from "../../../../db/models/comment.model.js"
 import { likeModel } from "../../../../db/models/like.model.js"
 import { postModel } from "../../../../db/models/post.model.js"
 import { ApiFeatures } from "../../../utils/ApiFeatures.js"
@@ -54,7 +55,6 @@ const deletePost = handleAsyncError(async (req, res, next) => {
 
 
     //NOTE - remove all likes from like model  after delete the post 
-
     await likeModel.bulkWrite([
         {
             deleteMany: {
@@ -62,6 +62,17 @@ const deletePost = handleAsyncError(async (req, res, next) => {
             }
         }
     ])
+
+
+    //NOTE - remove all comments from comment model  after delete the post 
+    await commentModel.bulkWrite([
+        {
+            deleteMany: {
+                filter: { postId: id }
+            }
+        }
+    ])
+
 
     res.status(201).json({ message: 'post deleted successfully', updatePost })
 })
