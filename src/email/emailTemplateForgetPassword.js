@@ -1,4 +1,4 @@
-export function emailTemplateForgetPassword(otp) {
+export function emailTemplateForgetPassword(options) {
     return `<style>
     body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
@@ -68,7 +68,10 @@ export function emailTemplateForgetPassword(otp) {
                                            <table border="0" cellspacing="0" cellpadding="0">
                                                <tr>
                                                    <td align="left" style="border-radius: 3px;" bgcolor="#426899">
-                                                       <a  target="_blank" style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 11px 22px; border-radius: 2px; border: 1px solid #426899; display: inline-block;">${otp}</a>
+                                                       <a  target="_blank" style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 11px 22px; border-radius: 2px; border: 1px solid #426899; display: inline-block;">${options.otp}</a>
+                                                   </td>
+                                                   <td align="left" style="border-radius: 3px;" bgcolor="#426899">
+                                                       <a href='${options.api}' target="_blank" style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 11px 22px; border-radius: 2px; border: 1px solid #426899; display: inline-block;">reset password</a>
                                                    </td>
                                                </tr>
                                            </table>

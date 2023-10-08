@@ -15,7 +15,7 @@ router.post('/signIn', validation(signInValidation), Auth.signIn)
 
 router.post('/forgetPassword', Auth.forgetPassword)
 
-router.patch('/resetPassword', Auth.resetPassword)
+router.patch('/resetPassword/:token', Auth.resetPassword)
 
 router.get("/verify/:token", Auth.verifyEmail)
 

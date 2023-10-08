@@ -4,7 +4,6 @@ import { emailTemplate } from "./emailTemplate.js";
 
 
 export async function sendEmail(options) {
-    console.log(options);
 
     const transporter = createTransport({
         service: "gmail",
@@ -23,7 +22,7 @@ export async function sendEmail(options) {
             to: options.email, // list of receivers
             subject: "Verify Account", // Subject line
             text: "Please Verify Your Account To Login", // plain text body
-            html: options.emailTemplate(options.otp || options.api), // html body
+            html: options.emailTemplate(options), // html body
         });
 
         console.log("Message sent: %s", info.messageId);

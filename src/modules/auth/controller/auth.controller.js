@@ -107,17 +107,24 @@ const forgetPassword = handleAsyncError(async (req, res, next) => {
     // Save the user with the new OTP and expiration time
     await user.save();
 
+
+    //NOTE - generate new token
+    const token = jwt.sign({ id: user._id }, process.env.reset_password_token)
+    //TODO - FRONT END MUST PROVIDE LINK FOR REDIRECT TO LET USER ENTER NEW PASSWORD 
+    const link = `${req.protocol}://${req.headers.host}/api/v1/auth/resetPassword/${token}`
+
+
     // Send verify email with OTP
-    sendEmail({ email, otp, emailTemplate: emailTemplateForgetPassword });
+    sendEmail({ email, otp, api: link, emailTemplate: emailTemplateForgetPassword });
 
     res.status(200).json({ message: 'Email sent successfully', user });
 });
 
 const resetPassword = handleAsyncError(async (req, res, next) => {
     const { otp, newPassword } = req.body;
-    const { token } = req.headers;
+    const { token } = req.params;
 
-    const decoded = jwt.verify(token, process.env.SECRET_KEY_TOKEN);
+    const decoded = jwt.verify(token, process.env.reset_password_token);
 
     // Check user OTP and expiration time
     const user = await userModel.findOne({
