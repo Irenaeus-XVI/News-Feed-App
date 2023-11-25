@@ -1,4 +1,4 @@
-# SARAHA-APP
+# News-Feed-App
 News Feed App is a web application for consuming and exploring news posts. It's built using Node.js, Express, and MongoDB.
 ## Getting Started
 
